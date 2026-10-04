@@ -87,14 +87,16 @@ public class ServiceServiceTest {
         String url = "http://some.url";
         service.setUrl(url);
 
-        MockURLConnection spy = Mockito.spy(new MockURLConnection(new URL(url)));
-        when(urlConnectionFactory.get(any(URL.class))).thenReturn(spy);
-        
+        HttpURLConnection connection = Mockito.mock(HttpURLConnection.class);
+        when(connection.getURL()).thenReturn(new URL(url));
+        when(connection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
+        when(urlConnectionFactory.get(any(URL.class))).thenReturn(connection);
+
         serviceService.update(dashId, service);
 
         verify(urlConnectionFactory).get(any(URL.class));
-        verify(spy).connect();
-        verify(spy).getResponseCode();
+        verify(connection).connect();
+        verify(connection).getResponseCode();
 
     }
 
@@ -136,26 +138,4 @@ public class ServiceServiceTest {
 
 
     }
-
-    class MockURLConnection extends HttpURLConnection {
-
-		protected MockURLConnection(URL u) {
-			super(u);
-		}
-
-		@Override
-		public void disconnect() {
-		}
-
-		@Override
-		public boolean usingProxy() {
-			return false;
-		}
-
-		@Override
-		public void connect() throws IOException {
-		}
-    	
-    }
-    
 }

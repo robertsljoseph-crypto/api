@@ -1,8 +1,8 @@
-FROM openjdk:8-jre
+FROM eclipse-temurin:17-jre
 
 VOLUME ["/hygieia/logs"]
 
-RUN mkdir /hygieia/config
+RUN mkdir -p /hygieia/config
 
 EXPOSE 8080
 

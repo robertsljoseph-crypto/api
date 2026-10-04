@@ -8,7 +8,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.lang.reflect.Field;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
@@ -366,9 +365,7 @@ public class MonitorProxyConfigTest {
 	}
 	
 	private void assertAuthenticator(Class<ProxyAuthenticator> clazz) throws Exception {
-		Field field = Authenticator.class.getDeclaredField("theAuthenticator");
-        field.setAccessible(true);
-        Object result = field.get(null);
+		Authenticator result = Authenticator.getDefault();
 		
         if(clazz == null) {
         	assertNull(result);
